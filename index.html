@@ -4,10 +4,31 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>PlantEngic - Plant Scanner App</title>
+    <style>
+      /* Modal support styles */
+      body.modal-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+      }
+      #modal-root {
+        position: fixed;
+        z-index: 999999;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+      #modal-root > * {
+        pointer-events: auto;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+    <div id="modal-root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

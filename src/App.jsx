@@ -3,6 +3,7 @@ import Layout from './components/Layout/Layout';
 import Hero from './components/Hero/Hero';
 import FallbackHero from './components/Hero/FallbackHero';
 import ErrorBoundary from './components/ErrorBoundary';
+import { GeminiProvider } from './context/GeminiContext';
 import './App.css';
 
 function App() {
@@ -19,13 +20,15 @@ function App() {
   }, []);
 
   return (
-    <ErrorBoundary>
-      <Layout>
-        <ErrorBoundary fallback={<FallbackHero />}>
-          {useThreeJS ? <Hero /> : <FallbackHero />}
-        </ErrorBoundary>
-      </Layout>
-    </ErrorBoundary>
+    <GeminiProvider>
+      <ErrorBoundary>
+        <Layout>
+          <ErrorBoundary fallback={<FallbackHero />}>
+            {useThreeJS ? <Hero /> : <FallbackHero />}
+          </ErrorBoundary>
+        </Layout>
+      </ErrorBoundary>
+    </GeminiProvider>
   );
 }
 

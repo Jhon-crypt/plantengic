@@ -1,12 +1,15 @@
 import React, { useRef, useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import * as THREE from 'three';
 import { createParticleScene } from '../../utils/particleScene';
+import PlantScanModal from '../PlantScan/PlantScanModal';
 import './Hero.css';
 
 const Hero = () => {
   const canvasRef = useRef(null);
   const [webGLSupported, setWebGLSupported] = useState(true);
   const [sceneLoaded, setSceneLoaded] = useState(false);
+  const [showScanModal, setShowScanModal] = useState(false);
 
   useEffect(() => {
     // Check for WebGL support
@@ -46,6 +49,73 @@ const Hero = () => {
   const plantIcons = [
     '🌿', '🌱', '🍃', '🌴', '🌲', '🍀', '🌵', '🌳', '🍂'
   ];
+  
+  const handleScanButtonClick = (e) => {
+    e.preventDefault();  // Prevent any default navigation
+    console.log('Opening scan modal...');
+    setShowScanModal(true);
+  };
+  
+  const handleCloseModal = (e) => {
+    if (e) e.preventDefault();  // Prevent any default navigation
+    console.log('Closing scan modal...');
+    setShowScanModal(false);
+  };
+
+  // Log when modal display state changes
+  useEffect(() => {
+    console.log(`Modal display state: ${showScanModal ? 'visible' : 'hidden'}`);
+  }, [showScanModal]);
+  
+  // Create modal portal
+  const renderModal = () => {
+    if (!showScanModal) return null;
+    
+    // Find modal root element
+    const modalRoot = document.getElementById('modal-root');
+    
+    // If modal root exists, use portal, otherwise render inline
+    if (modalRoot) {
+      return ReactDOM.createPortal(
+        <PlantScanModal onClose={handleCloseModal} />,
+        modalRoot
+      );
+    }
+    
+    // Fallback to inline rendering
+    return <PlantScanModal onClose={handleCloseModal} />;
+  };
+  
+  // Create portal target if needed
+  useEffect(() => {
+    if (showScanModal) {
+      // Make sure the body can't be scrolled while modal is open
+      document.body.style.overflow = 'hidden';
+      // Add a class to maintain context to the body
+      document.body.classList.add('modal-open');
+    } else {
+      // Restore scrolling when modal is closed
+      document.body.style.overflow = '';
+      document.body.classList.remove('modal-open');
+    }
+    
+    // Prevent history navigation when modal is open
+    const handlePopState = (e) => {
+      if (showScanModal) {
+        e.preventDefault();
+        setShowScanModal(false);
+      }
+    };
+    
+    window.addEventListener('popstate', handlePopState);
+    
+    return () => {
+      // Cleanup on unmount
+      document.body.style.overflow = '';
+      document.body.classList.remove('modal-open');
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [showScanModal]);
 
   return (
     <section
@@ -96,8 +166,13 @@ const Hero = () => {
           </p>
           
           <div className="cta-buttons">
-            <button className="cta-button primary-cta">Download App</button>
-            <button className="cta-button secondary-cta">See Plant Database</button>
+            <button 
+              className="cta-button scan-button" 
+              onClick={handleScanButtonClick}
+            >
+              <span className="camera-icon">📷</span>
+              Scan a Plant Now
+            </button>
           </div>
 
           <div className="scan-info">
@@ -106,6 +181,8 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      
+      {renderModal()}
     </section>
   );
 };

@@ -110,10 +110,10 @@ export const createParticleScene = (canvas) => {
     
     // Create vertices from the shape
     const vertices = new Float32Array(shape.length * 3);
-    for (let i = 0; i < shape.length; i++) {
-      vertices[i * 3] = shape[i].x;
-      vertices[i * 3 + 1] = shape[i].y;
-      vertices[i * 3 + 2] = shape[i].z;
+    for (let j = 0; j < shape.length; j++) {
+      vertices[j * 3] = shape[j].x;
+      vertices[j * 3 + 1] = shape[j].y;
+      vertices[j * 3 + 2] = shape[j].z;
     }
     
     geometry.setAttribute(
