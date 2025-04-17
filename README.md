@@ -17,7 +17,7 @@ If you are developing a production application, we recommend using TypeScript wi
 
 PlantEngic combines cutting-edge AI technology with beautiful visualization to create a seamless plant identification experience. Simply point your camera at any plant to instantly receive detailed care instructions, scientific information, and growth tips.
 
-![PlantEngic Demo](https://via.placeholder.com/800x400?text=PlantEngic+Demo)
+![PlantEngic Demo](https://plantengic.brimble.app/)
 
 ## ✨ Features
 
